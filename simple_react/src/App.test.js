@@ -25,6 +25,15 @@ test("should render counter display", () => {
   expect(counter.length).toBe(1);
 });
 
-test("should start counter at 0 ", () => {});
+test("should start counter at 0 ", () => {
+  //.text returs a string
+  const startText = findByTestAttribute(wrapper, "count").text();
+  expect(startText).toBe("0");
+});
 
-test("should increment counter when clicking on the button", () => {});
+test("should increment counter when clicking on the button", () => {
+  const button = findByTestAttribute(wrapper, "increment-button");
+  button.simulate("click");
+  const displayNumber = findByTestAttribute(wrapper, "count").text();
+  expect(displayNumber).toBe("1");
+});
