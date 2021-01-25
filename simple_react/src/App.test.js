@@ -1,15 +1,29 @@
 import Enzyme, { shallow } from "enzyme";
 import App from "./App";
 
+let wrapper = null;
+const setUp = () => shallow(<App />);
+
+beforeEach(() => {
+  wrapper = setUp();
+});
+const findByTestAttribute = (wrapper, attr) =>
+  wrapper.find(`[data-test='${attr}']`);
+
 test("renders without errors", () => {
-  const wrapper = shallow(<App />);
-  const appComponent = wrapper.find('[data-test="component-app"]');
+  const appComponent = findByTestAttribute(wrapper, "component-app");
   expect(appComponent.length).toBe(1);
 });
 
-test("should render a button", () => {});
+test("should render a button", () => {
+  const button = findByTestAttribute(wrapper, "increment-button");
+  expect(button.length).toBe(1);
+});
 
-test("should render counter display", () => {});
+test("should render counter display", () => {
+  const counter = findByTestAttribute(wrapper, "counter");
+  expect(counter.length).toBe(1);
+});
 
 test("should start counter at 0 ", () => {});
 
