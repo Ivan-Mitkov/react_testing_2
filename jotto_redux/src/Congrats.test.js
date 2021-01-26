@@ -1,9 +1,15 @@
 import Enzyme, { shallow } from "enzyme";
 import App from "./App";
-import Congrats from "./Congrats";
-import { findByTestAttribute } from "./test/testUtils";
+import checkPropTypes from "check-prop-types";
 
-const setUp = (props = {}) => shallow(<Congrats {...props} />);
+import Congrats from "./Congrats";
+import { findByTestAttribute, checkProps } from "./test/testUtils";
+
+const defaultProps = { success: false };
+const setUp = (props = {}) => {
+  const setupProps = { ...defaultProps, ...props };
+  return shallow(<Congrats {...setupProps} />);
+};
 
 test("should renders without errors", () => {
   const wrapper = setUp();
@@ -22,4 +28,9 @@ test("render no empty congrat message when success prop is true", () => {
   const wrapper = setUp({ success: true });
   const component = findByTestAttribute(wrapper, "c-congrat");
   expect(component.text().length).not.toBe(0);
+});
+
+test("does not throw warning with expected props ", () => {
+  const expectedProps = { success: false };
+  checkProps(Congrats, expectedProps);
 });
