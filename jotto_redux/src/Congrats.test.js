@@ -1,6 +1,4 @@
-import Enzyme, { shallow } from "enzyme";
-import App from "./App";
-import checkPropTypes from "check-prop-types";
+import  { shallow } from "enzyme";
 
 import Congrats from "./Congrats";
 import { findByTestAttribute, checkProps } from "./test/testUtils";
