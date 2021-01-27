@@ -12,6 +12,7 @@ const setUp = (initState = {}) => {
   // </ContextProvider>
   //
   //.dive() returns React child component of the shallow wrapper
+  //https://enzymejs.github.io/enzyme/docs/api/ShallowWrapper/dive.html
   // const wraper = shallow(<Input store={store} />).dive();
   /* <Input store={{...}} dispatch={[Function: dispatch]} /> */
   const wraper = shallow(<Input store={store} />)
@@ -19,21 +20,47 @@ const setUp = (initState = {}) => {
     .dive();
   // <div />
   // console.log(wraper.debug());
-  // console.log
   return wraper;
-  // at setUp (src/InputConnectWithRedux.test.js:11:11)
 };
 
 describe("render component", () => {
+  let wrapper;
+  beforeEach(() => {
+    const initState = { success: false };
+    wrapper = setUp(initState);
+  });
   describe("word has not be guessed", () => {
-    test("should render component without error", () => {});
-    test("should render the input box", () => {});
-    test("should render the submit box", () => {});
+    test("should render component without error", () => {
+      const component = findByTestAttribute(wrapper, "c-input");
+      expect(component.length).toBe(1);
+    });
+    test("should render the input box", () => {
+      const component = findByTestAttribute(wrapper, "input-box");
+      expect(component.length).toBe(1);
+    });
+    test("should render the submit button", () => {
+      const component = findByTestAttribute(wrapper, "submit-btn");
+      expect(component.length).toBe(1);
+    });
   });
   describe("word has been guessed", () => {
-    test("should render component without error", () => {});
-    test("should not render the input box", () => {});
-    test("should not render the submit box", () => {});
+    let wrapper;
+    beforeEach(() => {
+      const initState = { success: true };
+      wrapper = setUp(initState);
+    });
+    test("should render component without error", () => {
+      const component = findByTestAttribute(wrapper, "c-input");
+      expect(component.length).toBe(1);
+    });
+    test("should not render the input box", () => {
+      const component = findByTestAttribute(wrapper, "input-box");
+      expect(component.length).toBe(0);
+    });
+    test("should not render the submit button", () => {
+      const component = findByTestAttribute(wrapper, "submit-btn");
+      expect(component.length).toBe(0);
+    });
   });
 });
 describe("update state of component", () => {
