@@ -20,7 +20,7 @@ describe("get secret word action ", () => {
     moxios.uninstall();
   });
 
-  test("adds response word to the state", () => {
+  test("adds response word to the state", async () => {
     const secretWord = "party";
     const store = storeFactory();
 
@@ -32,10 +32,10 @@ describe("get secret word action ", () => {
       });
     });
 
-    return store.dispatch(getSecretWord()).then(() => {
-      const newState = store.getState();
-      // console.log(JSON.stringify(newState));
-      expect(newState.secretWord).toEqual(secretWord);
-    });
+    await store.dispatch(getSecretWord());
+
+    const newState = store.getState();
+    // console.log(JSON.stringify(newState));
+    expect(newState.secretWord).toEqual(secretWord);
   });
 });

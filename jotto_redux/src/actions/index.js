@@ -22,11 +22,10 @@ export const guessword = (guessword) => (dispatch, getState) => {
 };
 
 export const getSecretWord = () => {
-  return (dispatch) => {
+  return async (dispatch) => {
     //server for random words, in test we are using moxios so it will never go to this address
-    return axios.get("http://localhost:3030").then((response) => {
-      console.log(response.data);
-      dispatch({ type: actionTypes.SET_SECRET_WORD, payload: response.data });
-    });
+    const response = await axios.get("http://localhost:3030");
+
+    dispatch({ type: actionTypes.SET_SECRET_WORD, payload: response.data });
   };
 };
