@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import React, { Component } from "react";
 import { guessword } from "./actions/index";
-export class Input extends Component {
+export class UnconnectedInput extends Component {
   render() {
     const { success } = this.props;
     const content = success ? null : (
@@ -16,6 +16,7 @@ export class Input extends Component {
           data-test="submit-btn"
           type="submit"
           className="btn btn-primary mb-2"
+          onClick={this.props.guessword}
         >
           Submit
         </button>
@@ -29,4 +30,4 @@ const mapStateToProps = (state, ownProps) => {
     success: state.success,
   };
 };
-export default connect(mapStateToProps, { guessword })(Input);
+export default connect(mapStateToProps, { guessword })(UnconnectedInput);

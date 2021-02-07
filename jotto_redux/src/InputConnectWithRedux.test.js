@@ -2,6 +2,7 @@ import React from "react";
 import { shallow } from "enzyme";
 import { findByTestAttribute, storeFactory } from "./test/testUtils";
 import Input from "./Input";
+import { UnconnectedInput } from "./Input";
 //connect the redux store in setup
 const setUp = (initState = {}) => {
   //create a store replacing redux store in Provider
@@ -77,4 +78,18 @@ describe("redux props", () => {
     const guessWordProps = wrapper.instance().props.guessword;
     expect(guessWordProps).toBeInstanceOf(Function);
   });
+});
+
+test("guessword run when button is clicked ", () => {
+  const guesswordMock = jest.fn();
+  //set up Input component with getSecretWord Mock as a prop
+
+  const wrapper = shallow(<UnconnectedInput guessword={guesswordMock} />);
+
+  //submit guessword
+  const btn = findByTestAttribute(wrapper, "submit-btn");
+  btn.simulate("click");
+  //check if mock run
+  const guesswordMockCount = guesswordMock.mock.calls.length;
+  expect(guesswordMockCount).toBe(1);
 });
