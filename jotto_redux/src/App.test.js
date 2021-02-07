@@ -1,7 +1,8 @@
 import React from "react";
 import { shallow } from "enzyme";
 import { storeFactory } from "./test/testUtils";
-import App from "./App";
+import App, { UnconnectedApp } from "./App";
+import { getLetterMatchCount } from "./helpers";
 
 const setUp = (state = {}) => {
   const store = storeFactory(state);
@@ -36,7 +37,29 @@ describe("redux properties", () => {
   });
   test("guessWord action creator is a function prop ", () => {
     const wrapper = setUp();
-    const guessWordProps = wrapper.instance().props.guessword;
+    const guessWordProps = wrapper.instance().props.getSecretWord;
     expect(guessWordProps).toBeInstanceOf(Function);
   });
+});
+
+test("getSecretWord action runs on App mount ", () => {
+  const getSecretWordMock = jest.fn();
+  //set up App component with getSecretWord Mock as a prop
+
+  const wrapper = shallow(
+    <UnconnectedApp
+      getSecretWord={getSecretWordMock}
+      success={true}
+      guessedWords={[{ letterMatchCount: 1, guessedWord: "party" }]}
+    />
+  );
+
+  expect(wrapper.instance().props.guessedWords).toBeInstanceOf(Array);
+  expect(wrapper.instance().props.guessedWords[0].letterMatchCount).toBe(1);
+  //run lifecycle method
+  wrapper.instance().componentDidMount();
+
+  //check if mock run
+  const getSecretWordCallCount = getSecretWordMock.mock.calls.length;
+  expect(getSecretWordCallCount).toBe(1);
 });
