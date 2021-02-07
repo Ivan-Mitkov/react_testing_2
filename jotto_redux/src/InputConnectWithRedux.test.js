@@ -80,16 +80,30 @@ describe("redux props", () => {
   });
 });
 
-test("guessword run when button is clicked ", () => {
-  const guesswordMock = jest.fn();
-  //set up Input component with getSecretWord Mock as a prop
+describe("guessword action creator", () => {
+  let guesswordMock;
+  let wrapper;
+  const guessWord = "train";
+  beforeEach(() => {
+    guesswordMock = jest.fn();
+    //set up Input component with getSecretWord Mock as a prop
+    wrapper = shallow(<UnconnectedInput guessword={guesswordMock} />);
+    //add value to the input box
+    wrapper.setState({ currentGuess: guessWord });
+    //submit guessword
+    const btn = findByTestAttribute(wrapper, "submit-btn");
+    btn.simulate("click", { preventDefault() {} });
+  });
 
-  const wrapper = shallow(<UnconnectedInput guessword={guesswordMock} />);
-
-  //submit guessword
-  const btn = findByTestAttribute(wrapper, "submit-btn");
-  btn.simulate("click");
-  //check if mock run
-  const guesswordMockCount = guesswordMock.mock.calls.length;
-  expect(guesswordMockCount).toBe(1);
+  test("guessword run when button is clicked ", () => {
+    //check if mock run
+    const guesswordMockCount = guesswordMock.mock.calls.length;
+    expect(guesswordMockCount).toBe(1);
+  });
+  test("should call guessword with input values", () => {
+    //first time it is called and get first arg
+    const guessWordArg = guesswordMock.mock.calls[0][0];
+    // console.log(guesswordMock.mock.calls);
+    expect(guessWordArg).toBe(guessWord);
+  });
 });
