@@ -63,6 +63,18 @@ describe("render component", () => {
     });
   });
 });
-describe("update state of component", () => {
-  test("should ", () => {});
+describe("redux props", () => {
+  test("should have success piece of state ", () => {
+    const success = true;
+    const wrapper = setUp({ success });
+    //create react component instance get props an than success prop
+    const successProps = wrapper.instance().props.success;
+    expect(successProps).toBe(success);
+  });
+  //test actions
+  test("guessWord action creator is a function prop ", () => {
+    const wrapper = setUp();
+    const guessWordProps = wrapper.instance().props.guessword;
+    expect(guessWordProps).toBeInstanceOf(Function);
+  });
 });

@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import React, { Component } from "react";
-
+import { guessword } from "./actions/index";
 export class Input extends Component {
   render() {
     const { success } = this.props;
@@ -12,7 +12,11 @@ export class Input extends Component {
           type="text"
           placeholder="enter guess"
         ></input>
-        <button data-test="submit-btn" type="submit" className='btn btn-primary mb-2'>
+        <button
+          data-test="submit-btn"
+          type="submit"
+          className="btn btn-primary mb-2"
+        >
           Submit
         </button>
       </form>
@@ -25,4 +29,4 @@ const mapStateToProps = (state, ownProps) => {
     success: state.success,
   };
 };
-export default connect(mapStateToProps)(Input);
+export default connect(mapStateToProps, { guessword })(Input);
