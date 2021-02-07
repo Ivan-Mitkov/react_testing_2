@@ -106,4 +106,11 @@ describe("guessword action creator", () => {
     // console.log(guesswordMock.mock.calls);
     expect(guessWordArg).toBe(guessWord);
   });
+  test("should clear input values", () => {
+    //get value from state
+    const input = wrapper.state("currentGuess");
+    // console.log(guesswordMock.mock.calls);
+
+    expect(input).toBe("");
+  });
 });
