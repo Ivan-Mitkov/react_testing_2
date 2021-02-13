@@ -1,4 +1,13 @@
-import { render, screen } from "@testing-library/react";
+import { shallow } from "enzyme";
+import { findByTestAttribute } from "./test/testUtils";
 import App from "./App";
 
-test("renders learn react link", () => {});
+const setup = () => {
+  return shallow(<App />);
+};
+
+test("App should render without error", () => {
+  const wrapper = setup();
+  const component = findByTestAttribute(wrapper, "comp-app");
+  expect(component.length).toBe(1);
+});
