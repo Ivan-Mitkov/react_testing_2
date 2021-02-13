@@ -22,4 +22,13 @@ describe("getSecretWord calls", () => {
     setup();
     expect(mockGetSecretWord).toHaveBeenCalled();
   });
+  test("secretWord does not update on app aupdate", () => {
+    const wrapper = setup();
+    //clear again because we expect toHaveBeenCalled after mount so need to clear again
+    mockGetSecretWord.mockClear();
+
+    //wrapper.update() does not trigger update so trigger update with props
+    wrapper.setProps();
+    expect(mockGetSecretWord).not.toHaveBeenCalled();
+  });
 });
