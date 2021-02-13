@@ -1,7 +1,11 @@
 import axios from "axios";
 export const getSecretWord = async (setSecretWord) => {
-  const response = await axios.get("https:/somerandom/server");
-  setSecretWord(response.data);
+  try {
+    const response = await axios.request("https:/somerandom/server");
+    setSecretWord(response.data);
+  } catch (error) {
+    setSecretWord("party");
+  }
 };
 
 //default export for mocking

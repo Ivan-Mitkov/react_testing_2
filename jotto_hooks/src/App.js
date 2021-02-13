@@ -1,9 +1,8 @@
 import React from "react";
 import "./App.css";
-import Congrats from "./Congrats";
-import GuessedWord from "./GuessWord";
-import hookActions from "./actions/hookActions";
 
+import hookActions from "./actions/hookActions";
+import Input from "./Input";
 export const SET_SECRET_WORD = "SET_SECRET_WORD";
 function reducer(state, action) {
   switch (action.type) {
@@ -25,12 +24,26 @@ const App = () => {
   React.useEffect(() => {
     hookActions.getSecretWord(setSecretWord);
   }, []);
-  return (
+
+  return state.secretWord ? (
     <div className="container" data-test="comp-app">
-      <Congrats success={true} />
-      <GuessedWord
-        guessedWords={[{ guessedWord: "train", letterMatchCount: 3 }]}
-      />
+      <Input secretWord={state.secretWord} />
+    </div>
+  ) : (
+    <div className="container" data-test="spinner-comp">
+      <div
+        style={{
+          width: "100%",
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <div className="spinner-border" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
     </div>
   );
 };
