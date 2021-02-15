@@ -1,9 +1,13 @@
 import React from "react";
 import "./App.css";
-
+import languageContext from "./context/languageContext";
 import hookActions from "./actions/hookActions";
 import Input from "./Input";
+import LanguagePicker from "./LanguagePicker";
+
 export const SET_SECRET_WORD = "SET_SECRET_WORD";
+export const SET_LANGUAGE = "SET_LANGUAGE";
+
 function reducer(state, action) {
   switch (action.type) {
     case SET_SECRET_WORD:
@@ -11,23 +15,36 @@ function reducer(state, action) {
         ...state,
         secretWord: action.payload,
       };
+    case SET_LANGUAGE:
+      return {
+        ...state,
+        language: action.payload,
+      };
     default:
       return state;
   }
 }
 const App = () => {
-  const initialState = { secretWord: null };
+  const initialState = { secretWord: null, language: "en" };
   const [state, dispatch] = React.useReducer(reducer, initialState);
+
   const setSecretWord = (secretWord) =>
     dispatch({ type: SET_SECRET_WORD, payload: secretWord });
-
+  const setLanguage = (lg) => {
+    dispatch({ type: SET_LANGUAGE, payload: lg });
+  };
   React.useEffect(() => {
+    //dispatch action
     hookActions.getSecretWord(setSecretWord);
   }, []);
 
   return state.secretWord ? (
     <div className="container" data-test="comp-app">
-      <Input secretWord={state.secretWord} />
+      <languageContext.Provider value={state.language}>
+        <h1>Jotto</h1>
+        <LanguagePicker setLanguage={setLanguage}></LanguagePicker>
+        <Input secretWord={state.secretWord} />
+      </languageContext.Provider>
     </div>
   ) : (
     <div className="container" data-test="spinner-comp">
