@@ -11,7 +11,9 @@ const setup = (secretWord = "party") => {
   hookActions.getSecretWord = mockGetSecretWord;
 
   //mock useReducer state is secretWord, dispatch is mocked func
-  const mockUseReducer = jest.fn().mockReturnValue([{ secretWord }, jest.fn()]);
+  const mockUseReducer = jest
+    .fn()
+    .mockReturnValue([{ secretWord, language: "en" }, jest.fn()]);
   React.useReducer = mockUseReducer;
   return mount(<App />);
 };
