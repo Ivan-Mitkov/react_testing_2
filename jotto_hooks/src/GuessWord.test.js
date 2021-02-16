@@ -1,4 +1,5 @@
 import { shallow } from "enzyme";
+import React from "react";
 import GuessWord from "./GuessWord";
 import { findByTestAttribute, checkProps } from "./test/testUtils";
 
@@ -49,5 +50,24 @@ describe("if there are words guessed", () => {
   test("should display the correct number of guess words", () => {
     const guessWordNodes = findByTestAttribute(wrapper, "guess-w");
     expect(guessWordNodes.length).toBe(guessedWords.length);
+  });
+});
+
+describe("languagePicker", () => {
+  test("should correctly render guess instructions string in english by default", () => {
+    const wrapper = setUp({ guessedWords: [] });
+    const instructions = findByTestAttribute(wrapper, "guess-instructions");
+    expect(instructions.text()).toBe("Try to guess the secret word!");
+  });
+  test("should correctly render guess instructions string in emoji", () => {
+    //https://jestjs.io/docs/en/mock-function-api#mockfnmockreturnvaluevalue
+    const mockUseContext = jest.fn().mockReturnValue("emoji");
+    React.useContext = mockUseContext;
+    const wrapper = setUp({ guessedWords: [] });
+    const guessInstructions = findByTestAttribute(
+      wrapper,
+      "guess-instructions"
+    );
+    expect(guessInstructions.text()).toBe("🤔🤫🔤");
   });
 });
