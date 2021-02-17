@@ -1,9 +1,12 @@
 import React from "react";
 import "./App.css";
 import languageContext from "./context/languageContext";
+import successContext from "./context/successContext";
 import hookActions from "./actions/hookActions";
 import Input from "./Input";
 import LanguagePicker from "./LanguagePicker";
+import Congrats from "./Congrats";
+import GuessWords from "./GuessWord";
 
 export const SET_SECRET_WORD = "SET_SECRET_WORD";
 export const SET_LANGUAGE = "SET_LANGUAGE";
@@ -43,7 +46,11 @@ const App = () => {
       <languageContext.Provider value={state.language}>
         <h1>Jotto</h1>
         <LanguagePicker setLanguage={setLanguage}></LanguagePicker>
-        <Input secretWord={state.secretWord} />
+        <successContext.SuccessProvider>
+          <Congrats />
+          <Input secretWord={state.secretWord} />
+        </successContext.SuccessProvider>
+        {/**<GuessWords/> */}
       </languageContext.Provider>
     </div>
   ) : (
