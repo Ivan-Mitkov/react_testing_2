@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import languageContext from "./context/languageContext";
 import successContext from "./context/successContext";
+import guessedWordsContext from "./context/guessedWordsContext";
 import hookActions from "./actions/hookActions";
 import Input from "./Input";
 import LanguagePicker from "./LanguagePicker";
@@ -46,11 +47,13 @@ const App = () => {
       <languageContext.Provider value={state.language}>
         <h1>Jotto</h1>
         <LanguagePicker setLanguage={setLanguage}></LanguagePicker>
-        <successContext.SuccessProvider>
-          <Congrats />
-          <Input secretWord={state.secretWord} />
-        </successContext.SuccessProvider>
-        {/**<GuessWords/> */}
+        <guessedWordsContext.GuessedWordsContextProvider>
+          <successContext.SuccessProvider>
+            <Congrats />
+            <Input secretWord={state.secretWord} />
+          </successContext.SuccessProvider>
+          <GuessWords />
+        </guessedWordsContext.GuessedWordsContextProvider>
       </languageContext.Provider>
     </div>
   ) : (

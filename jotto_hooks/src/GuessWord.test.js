@@ -1,23 +1,23 @@
 import { shallow } from "enzyme";
 import React from "react";
 import GuessWord from "./GuessWord";
-import { findByTestAttribute, checkProps } from "./test/testUtils";
+import { findByTestAttribute } from "./test/testUtils";
+import guessedWordsContext from "./context/guessedWordsContext";
 
-const defaultProps = {
-  guessedWords: [{ guessedWord: "train", letterMatchCount: 3 }],
+const setUp = (guessedWords = []) => {
+  //mock custom hook
+  const mockUseGuessedWords = jest
+    .fn()
+    .mockReturnValue([guessedWords, jest.fn()]);
+
+  guessedWordsContext.useGuessedWords = mockUseGuessedWords;
+  return shallow(<GuessWord />);
 };
-const setUp = (props = {}) => {
-  const setupProps = { ...defaultProps, ...props };
-  return shallow(<GuessWord {...setupProps} />);
-};
-test("does not throw warning with expected props ", () => {
-  checkProps(GuessWord, defaultProps);
-});
 
 describe("if there are no words guessed", () => {
   let wrapper = null;
   beforeEach(() => {
-    wrapper = setUp({ guessedWords: [] });
+    wrapper = setUp([]);
   });
   test("should render without error ", () => {
     const component = findByTestAttribute(wrapper, "c-guessword");
@@ -37,7 +37,7 @@ describe("if there are words guessed", () => {
     { guessedWord: "party", letterMatchCount: 5 },
   ];
   beforeEach(() => {
-    wrapper = setUp({ guessedWords });
+    wrapper = setUp(guessedWords);
   });
   test("should render without error ", () => {
     const component = findByTestAttribute(wrapper, "c-guessword");
@@ -55,7 +55,7 @@ describe("if there are words guessed", () => {
 
 describe("languagePicker", () => {
   test("should correctly render guess instructions string in english by default", () => {
-    const wrapper = setUp({ guessedWords: [] });
+    const wrapper = setUp([]);
     const instructions = findByTestAttribute(wrapper, "guess-instructions");
     expect(instructions.text()).toBe("Try to guess the secret word!");
   });
@@ -63,7 +63,7 @@ describe("languagePicker", () => {
     //https://jestjs.io/docs/en/mock-function-api#mockfnmockreturnvaluevalue
     const mockUseContext = jest.fn().mockReturnValue("emoji");
     React.useContext = mockUseContext;
-    const wrapper = setUp({ guessedWords: [] });
+    const wrapper = setUp([]);
     const guessInstructions = findByTestAttribute(
       wrapper,
       "guess-instructions"

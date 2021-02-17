@@ -1,20 +1,20 @@
 import React from "react";
-import PropTypes, { string } from "prop-types";
 import strings from "./helpers/strings";
 import languageContext from "./context/languageContext";
+import guessedWordsContext from "./context/guessedWordsContext";
 
-const GuessWord = (props) => {
+const GuessWord = () => {
   const value = React.useContext(languageContext);
-
+  const [guessedWords] = guessedWordsContext.useGuessedWords();
   const renderInstructions = () => {
-    if (props.guessedWords.length === 0) {
+    if (guessedWords.length === 0) {
       return (
         <span data-test="guess-instructions">
           {strings.getStringByLanguage(value, "guessPrompt")}
         </span>
       );
     }
-    let gwRows = props.guessedWords.map((word, i) => {
+    let gwRows = guessedWords.map((word, i) => {
       return (
         <tr key={i} data-test="guess-w">
           <td>{word.guessedWord}</td>
@@ -29,7 +29,12 @@ const GuessWord = (props) => {
           <thead className="thead-dark">
             <tr>
               <th>{strings.getStringByLanguage(value, "guessColumnHeader")}</th>
-              <th>{strings.getStringByLanguage(value, "matchingLettersColumnHeader")}</th>
+              <th>
+                {strings.getStringByLanguage(
+                  value,
+                  "matchingLettersColumnHeader"
+                )}
+              </th>
             </tr>
           </thead>
           <tbody>{gwRows}</tbody>
@@ -38,15 +43,6 @@ const GuessWord = (props) => {
     );
   };
   return <div data-test="c-guessword">{renderInstructions()}</div>;
-};
-
-GuessWord.propTypes = {
-  guessedWords: PropTypes.arrayOf(
-    PropTypes.shape({
-      guessedWord: PropTypes.string.isRequired,
-      letterMatchCount: PropTypes.number.isRequired,
-    })
-  ).isRequired,
 };
 
 export default GuessWord;
