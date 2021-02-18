@@ -1,16 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
 import languageContext from "./context/languageContext";
+import successContext from "./context/successContext";
 import strings from "./helpers/strings";
 
 const Input = ({ secretWord = "party" }) => {
   const [currentGuess, setCurrentGuess] = React.useState("");
   const value = React.useContext(languageContext);
+  const [success, setSuccess] = successContext.useSuccess();
+
   const submit = strings.getStringByLanguage(value, "submit");
   const handleSubmit = (e) => {
     e.preventDefault();
     setCurrentGuess("");
   };
+
+  if (success) {
+    return null;
+  }
   return (
     <div className="container" data-test="comp-input">
       <form className="form-inline" data-test="form-box">

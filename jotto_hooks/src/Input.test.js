@@ -2,16 +2,18 @@ import React from "react";
 import { shallow, mount } from "enzyme";
 import { findByTestAttribute, checkProps } from "./test/testUtils";
 import languageContext from "./context/languageContext";
+import successContext from "./context/successContext";
 import Input from "./Input";
 
-const defaultProps = { secretWord: "party" };
-
-const setup = ({ language, secretWord }) => {
+const setup = ({ language, secretWord, success }) => {
   language = language || "en";
   secretWord = secretWord || "party";
+  success = success || false;
   return mount(
     <languageContext.Provider value={language}>
-      <Input secretWord={secretWord} />
+      <successContext.SuccessProvider value={[success, jest.fn()]}>
+        <Input secretWord={secretWord} />
+      </successContext.SuccessProvider>
     </languageContext.Provider>
   );
 };
@@ -25,6 +27,10 @@ test("Input should render without error", () => {
 test("does not throw warning with expected props ", () => {
   const expectedProps = { secretWord: "party" };
   checkProps(Input, expectedProps);
+});
+test("input component should not show when succes is true ", () => {
+  const wrapper = setup({ success: true });
+  expect(wrapper.isEmptyRender()).toBe(true);
 });
 
 describe("state controlled input field", () => {
