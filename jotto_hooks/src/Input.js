@@ -12,6 +12,9 @@ const Input = ({ secretWord = "party" }) => {
   const submit = strings.getStringByLanguage(value, "submit");
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (currentGuess === secretWord) {
+      setSuccess(true);
+    }
     setCurrentGuess("");
   };
 
