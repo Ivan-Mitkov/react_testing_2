@@ -3,6 +3,7 @@ import { shallow, mount } from "enzyme";
 import { findByTestAttribute, checkProps } from "./test/testUtils";
 import languageContext from "./context/languageContext";
 import successContext from "./context/successContext";
+import guessedWordsContext from "./context/guessedWordsContext";
 import Input from "./Input";
 
 const setup = ({ language, secretWord, success }) => {
@@ -10,11 +11,13 @@ const setup = ({ language, secretWord, success }) => {
   secretWord = secretWord || "party";
   success = success || false;
   return mount(
-    <languageContext.Provider value={language}>
-      <successContext.SuccessProvider value={[success, jest.fn()]}>
-        <Input secretWord={secretWord} />
-      </successContext.SuccessProvider>
-    </languageContext.Provider>
+    <guessedWordsContext.GuessedWordsContextProvider>
+      <languageContext.Provider value={language}>
+        <successContext.SuccessProvider value={[success, jest.fn()]}>
+          <Input secretWord={secretWord} />
+        </successContext.SuccessProvider>
+      </languageContext.Provider>
+    </guessedWordsContext.GuessedWordsContextProvider>
   );
 };
 
